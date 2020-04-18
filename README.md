@@ -105,6 +105,10 @@ $mnemonic = \RFAuthenticator::mnemonic()->words($words);
 $mnemonic = \RFAuthenticator::mnemonic()->entropy($entropy);
 ```
 
+## Change log
+
+Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
+
 ## Credits
 
 - [Raditz Farhan](https://github.com/raditzfarhan)
