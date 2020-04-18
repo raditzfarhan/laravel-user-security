@@ -3,6 +3,7 @@
 namespace RaditzFarhan\UserSecurity;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class UserSecurityServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,8 @@ class UserSecurityServiceProvider extends ServiceProvider
         ]);
 
         $this->loadMigrationsFrom(__DIR__.'/migrations');
+
+        Validator::extend('mnemonic', '\RaditzFarhan\UserSecurity\Rules\ExtendedValidator@mnemonic');
     }
 
     /**
