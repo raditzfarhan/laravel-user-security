@@ -12,6 +12,6 @@ class UserSecurity extends Model
      * @var array
      */
     protected $fillable = [
-        'model_type', 'security_pin', 'mnemonic_entropy', '2fa_key'
+        'model_type', 'security_pin', 'mnemonic_entropy', '2fa_key',
     ];
 }
