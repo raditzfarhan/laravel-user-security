@@ -17,7 +17,7 @@ class UserSecurityServiceProvider extends ServiceProvider
             __DIR__ . '/../config/rfauthenticator.php' => $this->configPath('rfauthenticator.php'),
         ]);
 
-        $this->loadMigrationsFrom(__DIR__.'/migrations');        
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
     }
 
     /**
@@ -35,7 +35,7 @@ class UserSecurityServiceProvider extends ServiceProvider
         // Register the service the package provides.
         $this->app->singleton('RFAuthenticator', function ($app) {
             return new RFAuthenticator;
-        });  
+        });
     }
 
     /**

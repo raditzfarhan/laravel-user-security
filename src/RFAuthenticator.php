@@ -14,7 +14,7 @@ class RFAuthenticator
     }
 
     public function __call($method, $arguments)
-    {  
+    {
         $property_name = strtolower(Str::snake($method));
 
         if (property_exists($this, $property_name)) {
