@@ -1,0 +1,34 @@
+{
+	"name": "raditzfarhan/laravel-user-security",
+	"description": "Add security pin, mnemonic key and 2fa authentication feature to users.",
+	"type": "laravel-package",
+	"keywords": [ "laravel", "lumen", "user", "security", "pin", "mnemonic", "2fa" ],
+	"require": {
+		"illuminate/support": "^6.0|^7.0|^8.0",
+		"illuminate/database": "^6.0|^7.0|^8.0",
+		"furqansiddiqui/bip39-mnemonic-php": "dev-master",
+		"pragmarx/google2fa": "^6.0|^7.0|^8.0",
+		"endroid/qr-code": "^3.7"
+	},
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Raditz Farhan",
+			"email": "raditzfarhan@gmail.com"
+		}
+	],
+	"minimum-stability": "dev",
+	"autoload": {
+		"psr-4": {
+			"RaditzFarhan\\UserSecurity\\": "src/"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [ "RaditzFarhan\\UserSecurity\\UserSecurityServiceProvider" ],
+			"aliases": {
+				"RFAuthenticator": "RaditzFarhan\\UserSecurity\\Facades\\RFAuthenticator"
+			}
+		}
+	}
+}
