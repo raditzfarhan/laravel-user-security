@@ -2,8 +2,8 @@
 
 namespace RaditzFarhan\UserSecurity;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
 
 class UserSecurityServiceProvider extends ServiceProvider
 {
