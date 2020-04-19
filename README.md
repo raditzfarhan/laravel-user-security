@@ -72,6 +72,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 }
 ```
 
+Add a key to your `.env` file for hashing.
+```
+RFA_KEY=set_your_key_here
+```
+
 ## Usage
 
 Example usage as below snippet:
@@ -103,6 +108,17 @@ $mnemonic = \RFAuthenticator::mnemonic()->words($words);
 
 // Generate Mnemonic using specified Entropy
 $mnemonic = \RFAuthenticator::mnemonic()->entropy($entropy);
+```
+
+It also comes with `mnemonic` rule to check your mnemonic words with entropy.
+
+```php
+$this->validate($request, [
+    ...
+    'mnemonic_words' => 'required|array|mnemonic',
+    'mnemonic_entropy' => 'required',
+    ...
+]);
 ```
 
 ## Change log
