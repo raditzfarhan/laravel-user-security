@@ -18,9 +18,10 @@ class UserSecurityServiceProvider extends ServiceProvider
             __DIR__ . '/../config/rfauthenticator.php' => $this->configPath('rfauthenticator.php'),
         ]);
 
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/migrations');
 
         Validator::extend('mnemonic', '\RaditzFarhan\UserSecurity\Rules\ExtendedValidator@mnemonic');
+        Validator::extend('mnemonic_exists', '\RaditzFarhan\UserSecurity\Rules\ExtendedValidator@mnemonicExists');
     }
 
     /**

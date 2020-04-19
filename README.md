@@ -1,5 +1,7 @@
 <p align="center">   
     <a href="https://github.com/raditzfarhan/laravel-user-security"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="License"></a>
+    <a href="https://packagist.org/packages/raditzfarhan/laravel-user-security"><img src="https://img.shields.io/packagist/v/raditzfarhan/laravel-user-security?style=flat-square"/></a>
+    <a href="https://packagist.org/packages/raditzfarhan/laravel-user-security"><img src="https://img.shields.io/packagist/dt/raditzfarhan/laravel-user-security?color=red&style=flat-square" /></a>
     <a href="https://github.com/raditzfarhan/laravel-user-security"><img src="https://github.styleci.io/repos/7548986/shield?style=square" alt="styleci"></img></a>
 </p>
 
@@ -77,6 +79,14 @@ Add a key to your `.env` file for hashing.
 RFA_KEY=set_your_key_here
 ```
 
+Add validation rule message to `resources/lang/{lang_code}/validation.php`.
+```php
+...
+'mnemonic' => 'The :attribute is invalid.',
+'mnemonic_exists' => 'The :attribute is already been used.',
+...
+```
+
 ## Usage
 
 Example usage as below snippet:
@@ -108,15 +118,20 @@ $mnemonic = \RFAuthenticator::mnemonic()->words($words);
 
 // Generate Mnemonic using specified Entropy
 $mnemonic = \RFAuthenticator::mnemonic()->entropy($entropy);
+
+// Get user by mnemonic words
+$user = \RFAuthenticator::mnemonic()->userByWords($words);
 ```
 
-It also comes with `mnemonic` rule to check your mnemonic words with entropy.
+It also comes with `mnemonic` and `mnemonic_exists` rules:
+- mnemonic - to check whether `mnemonic_words` and `mnemonic_entropy` match.
+- mnemonic_exists - to check whether `mnemonic_words` or `mnemonic_entropy` already exists.
 
 ```php
 $this->validate($request, [
     ...
     'mnemonic_words' => 'required|array|mnemonic',
-    'mnemonic_entropy' => 'required',
+    'mnemonic_entropy' => 'required|mnemonic_exists',
     ...
 ]);
 ```

@@ -6,6 +6,7 @@ namespace RaditzFarhan\UserSecurity\Rules;
 
 use Illuminate\Support\Arr;
 use RaditzFarhan\UserSecurity\Services\MnemonicService;
+use RaditzFarhan\UserSecurity\Models\UserSecurity;
 
 class ExtendedValidator
 {
@@ -24,6 +25,27 @@ class ExtendedValidator
             }
         } catch (\Exception $e) {
             // dd($e->getMessage());
+        }
+
+        return false;
+    }
+
+    public function mnemonicExists($attribute, $value, $parameters, $validator)
+    {
+        $mnemonicService = new MnemonicService();
+
+        $mnemonic_words = Arr::get($validator->getData(), 'mnemonic_words');
+        $mnemonic_entropy = Arr::get($validator->getData(), 'mnemonic_entropy');
+
+        if ($attribute === 'mnemonic_words') {
+            $mnemonic = $mnemonicService->words($value);
+            $hashed_mnemonic = $mnemonicService->hash($mnemonic->entropy);
+
+            return UserSecurity::where('mnemonic_entropy', $hashed_mnemonic)->count();
+        } elseif ($attribute === 'mnemonic_entropy') {
+            $hashed_mnemonic = $mnemonicService->hash($value);
+
+            return UserSecurity::where('mnemonic_entropy', $hashed_mnemonic)->count();
         }
 
         return false;
