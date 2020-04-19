@@ -3,6 +3,7 @@
 namespace RaditzFarhan\UserSecurity\Traits;
 
 use Illuminate\Support\Facades\Hash;
+use RaditzFarhan\UserSecurity\Services\MnemonicService;
 
 trait UserSecurable
 {
@@ -26,28 +27,25 @@ trait UserSecurable
 
     public function updateEntropy($entropy)
     {
-        $hash_key = config('rfauthenticator.key');
-        $hash_algo = config('rfauthenticator.algo');
-        $hashed_entropy = hash($hash_algo, $entropy . $hash_key);
+        $hashed_entropy = (new MnemonicService)->hash($entropy);
 
         if ($this->security) {
-            $this->security->entropy = $hashed_entropy;
+            $this->security->mnemonic_entropy = $hashed_entropy;
             $this->security->save();
         } else {
-            $this->security()->create(['model_type' => get_class($this), 'entropy' => $hashed_entropy]);
+            $this->security()->create(['model_type' => get_class($this), 'mnemonic_entropy' => $hashed_entropy]);
         }
     }
 
     public function updateMultipleAuthenticators($attributes)
     {
-        $hash_key = config('rfauthenticator.key');
-        $hash_algo = config('rfauthenticator.algo');
+        $mnemonicService = new MnemonicService;
 
-        $attributes = collect($attributes)->map(function ($value, $name) use ($hash_key, $hash_algo) {
+        $attributes = collect($attributes)->map(function ($value, $name) use ($mnemonicService) {
             if (in_array($name, ['security_pin'])) {
                 return Hash::make($value);
             } elseif ($name === 'mnemonic_entropy') {
-                return hash($hash_algo, $value . $hash_key);
+                return $mnemonicService->hash($value);
             } elseif ($name === '2fa_key') {
                 return encrypt($value);
             }

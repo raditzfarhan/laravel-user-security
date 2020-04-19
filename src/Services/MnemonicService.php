@@ -17,10 +17,12 @@ class MnemonicService
         $word_count = config('rfauthenticator.mnemonic.word_count');
 
         $mnemonic = BIP39::Generate($word_count);
+        $hashed_entropy = self::hash($mnemonic->entropy);
 
         // ensure the mnemonic is unique
-        while (UserSecurity::where('mnemonic_entropy', $mnemonic->entropy)->first()) {
+        while (UserSecurity::where('mnemonic_entropy', $hashed_entropy)->first()) {
             $mnemonic = BIP39::Generate($word_count);
+            $hashed_entropy = self::hash($mnemonic->entropy);
         }
 
         return $mnemonic;
@@ -44,5 +46,13 @@ class MnemonicService
     public function entropy($entropy)
     {
         return BIP39::Entropy($entropy);
+    }
+
+    public function hash($value)
+    {
+        $hash_key = config('rfauthenticator.key');
+        $hash_algo = config('rfauthenticator.algo');
+
+        return hash($hash_algo, $value . $hash_key);
     }
 }
