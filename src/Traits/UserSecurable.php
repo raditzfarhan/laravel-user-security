@@ -20,25 +20,34 @@ trait UserSecurable
             $this->security->security_pin = Hash::make($security_pin);
             $this->security->save();
         } else {
-            $this->security()->create(['model_type'=>get_class($this), 'security_pin'=>Hash::make($security_pin)]);
+            $this->security()->create(['model_type' => get_class($this), 'security_pin' => Hash::make($security_pin)]);
         }
     }
 
     public function updateEntropy($entropy)
     {
+        $hash_key = config('rfauthenticator.key');
+        $hash_algo = config('rfauthenticator.algo');
+        $hashed_entropy = hash($hash_algo, $entropy . $hash_key);
+
         if ($this->security) {
-            $this->security->entropy = Hash::make($entropy);
+            $this->security->entropy = $hashed_entropy;
             $this->security->save();
         } else {
-            $this->security()->create(['model_type'=>get_class($this), 'entropy'=>Hash::make($entropy)]);
+            $this->security()->create(['model_type' => get_class($this), 'entropy' => $hashed_entropy]);
         }
     }
 
     public function updateMultipleAuthenticators($attributes)
     {
-        $attributes = collect($attributes)->map(function ($value, $name) {
-            if (in_array($name, ['security_pin', 'mnemonic_entropy'])) {
+        $hash_key = config('rfauthenticator.key');
+        $hash_algo = config('rfauthenticator.algo');
+
+        $attributes = collect($attributes)->map(function ($value, $name) use ($hash_key, $hash_algo) {
+            if (in_array($name, ['security_pin'])) {
                 return Hash::make($value);
+            } elseif ($name === 'mnemonic_entropy') {
+                return hash($hash_algo, $value . $hash_key);
             } elseif ($name === '2fa_key') {
                 return encrypt($value);
             }
@@ -57,7 +66,7 @@ trait UserSecurable
             });
 
             if ($attributes->count() > 0) {
-                foreach ($attributes->toArray() as $key=>$val) {
+                foreach ($attributes->toArray() as $key => $val) {
                     $this->security->$key = $val;
                 }
             }
@@ -65,7 +74,7 @@ trait UserSecurable
             $this->security->save();
         } else {
             if ($attributes->count() > 0) {
-                $this->security()->create(array_merge(['model_type'=>get_class($this)], $attributes->toArray()));
+                $this->security()->create(array_merge(['model_type' => get_class($this)], $attributes->toArray()));
             }
         }
     }
