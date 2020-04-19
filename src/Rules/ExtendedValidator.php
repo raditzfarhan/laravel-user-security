@@ -34,20 +34,17 @@ class ExtendedValidator
     {
         $mnemonicService = new MnemonicService();
 
-        $mnemonic_words = Arr::get($validator->getData(), 'mnemonic_words');
-        $mnemonic_entropy = Arr::get($validator->getData(), 'mnemonic_entropy');
-
         if ($attribute === 'mnemonic_words') {
             $mnemonic = $mnemonicService->words($value);
             $hashed_mnemonic = $mnemonicService->hash($mnemonic->entropy);
 
-            return UserSecurity::where('mnemonic_entropy', $hashed_mnemonic)->count();
+            return !UserSecurity::where('mnemonic_entropy', $hashed_mnemonic)->count();
         } elseif ($attribute === 'mnemonic_entropy') {
             $hashed_mnemonic = $mnemonicService->hash($value);
 
-            return UserSecurity::where('mnemonic_entropy', $hashed_mnemonic)->count();
+            return !UserSecurity::where('mnemonic_entropy', $hashed_mnemonic)->count();
         }
 
-        return false;
+        return true;
     }
 }
