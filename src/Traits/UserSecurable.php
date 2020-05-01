@@ -19,7 +19,7 @@ trait UserSecurable
      * Create or Update user security pin.
      *
      * @param string $security_pin
-     * 
+     *
      * @return void
      */
     public function updateSecurityPin($security_pin)
@@ -36,7 +36,7 @@ trait UserSecurable
      * Create or Update user mnemonic entropy.
      *
      * @param string $entropy
-     * 
+     *
      * @return void
      */
     public function updateEntropy($entropy)
@@ -55,7 +55,7 @@ trait UserSecurable
      * Create or Update multiple authenticators.
      *
      * @param array $attributes
-     * 
+     *
      * @return void
      */
     public function updateMultipleAuthenticators(array $attributes)
@@ -102,8 +102,8 @@ trait UserSecurable
      * Verify user mnemonic words.
      *
      * @param array $words
-     * 
-     * @return boolean
+     *
+     * @return bool
      */
     public function verifyMnemonicWords(array $words)
     {
