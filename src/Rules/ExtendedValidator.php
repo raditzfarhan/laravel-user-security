@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RaditzFarhan\UserSecurity\Rules;
 
 use Illuminate\Support\Arr;
-use RaditzFarhan\UserSecurity\Services\MnemonicService;
 use RaditzFarhan\UserSecurity\Models\UserSecurity;
+use RaditzFarhan\UserSecurity\Services\MnemonicService;
 
 class ExtendedValidator
 {

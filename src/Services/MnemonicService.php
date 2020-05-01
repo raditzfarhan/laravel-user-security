@@ -32,7 +32,7 @@ class MnemonicService
      * Use mnemonic codes to find entropy.
      *
      * @param array $words
-     * 
+     *
      * @return FurqanSiddiqui\BIP39\Mnemonic
      */
     public function words(array $words)
@@ -44,7 +44,7 @@ class MnemonicService
      * Generate Mnemonic using specified Entropy.
      *
      * @param string @entropy
-     * 
+     *
      * @return FurqanSiddiqui\BIP39\Mnemonic
      */
     public function entropy($entropy)
@@ -56,7 +56,7 @@ class MnemonicService
      * Generate a hash for mnemonic entropy.
      *
      * @param string $value
-     * 
+     *
      * @return string
      */
     public function hash(string $value): string
@@ -71,7 +71,7 @@ class MnemonicService
      * Find user by words.
      *
      * @param array $words
-     * 
+     *
      * @return string
      */
     public function userByWords(array $words)
@@ -84,7 +84,7 @@ class MnemonicService
                 return  $userSecurity->model_type::find($userSecurity->model_id);
             }
         } catch (Exception $e) {
-            throw new UnexpectedValueException("Invalid words.");
+            throw new UnexpectedValueException('Invalid words.');
         }
     }
 
@@ -92,7 +92,7 @@ class MnemonicService
      * Find user by words.
      *
      * @param array $words
-     * 
+     *
      * @return string
      */
     public function verifyByWords(array $words, $entropy)
@@ -105,7 +105,7 @@ class MnemonicService
                 return true;
             }
         } catch (Exception $e) {
-            throw new UnexpectedValueException("Words does not match with record.");
+            throw new UnexpectedValueException('Words does not match with record.');
         }
 
         return false;
