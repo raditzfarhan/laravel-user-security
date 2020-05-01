@@ -68,7 +68,7 @@ class MnemonicService
     }
 
     /**
-     * Generate a hash for mnemonic entropy.
+     * Find user by words.
      *
      * @param array $words
      * 
@@ -86,5 +86,28 @@ class MnemonicService
         } catch (Exception $e) {
             throw new UnexpectedValueException("Invalid words.");
         }
+    }
+
+    /**
+     * Find user by words.
+     *
+     * @param array $words
+     * 
+     * @return string
+     */
+    public function verifyByWords(array $words, $entropy)
+    {
+        try {
+            $mnemonic = self::words($words);
+            $hashed_entropy = self::hash($mnemonic->entropy);
+
+            if ($hashed_entropy === $entropy) {
+                return true;
+            }
+        } catch (Exception $e) {
+            throw new UnexpectedValueException("Words does not match with record.");
+        }
+
+        return false;
     }
 }

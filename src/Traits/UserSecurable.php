@@ -8,13 +8,20 @@ use RaditzFarhan\UserSecurity\Services\MnemonicService;
 trait UserSecurable
 {
     /**
-     * Get the phone record associated with the user.
+     * Get the security record associated with the user.
      */
     public function security()
     {
-        return $this->hasOne('RaditzFarhan\UserSecurity\Models\UserSecurity', 'model_id')->where('model_type', get_class($this));
+        return $this->hasOne('RaditzFarhan\UserSecurity\Models\UserSecurity', 'model_id')->where('model_type', get_class($this))->withDefault();
     }
 
+    /**
+     * Create or Update user security pin.
+     *
+     * @param string $security_pin
+     * 
+     * @return void
+     */
     public function updateSecurityPin($security_pin)
     {
         if ($this->security) {
@@ -25,6 +32,13 @@ trait UserSecurable
         }
     }
 
+    /**
+     * Create or Update user mnemonic entropy.
+     *
+     * @param string $entropy
+     * 
+     * @return void
+     */
     public function updateEntropy($entropy)
     {
         $hashed_entropy = (new MnemonicService)->hash($entropy);
@@ -37,7 +51,14 @@ trait UserSecurable
         }
     }
 
-    public function updateMultipleAuthenticators($attributes)
+    /**
+     * Create or Update multiple authenticators.
+     *
+     * @param array $attributes
+     * 
+     * @return void
+     */
+    public function updateMultipleAuthenticators(array $attributes)
     {
         $mnemonicService = new MnemonicService;
 
@@ -75,5 +96,17 @@ trait UserSecurable
                 $this->security()->create(array_merge(['model_type' => get_class($this)], $attributes->toArray()));
             }
         }
+    }
+
+    /**
+     * Verify user mnemonic words.
+     *
+     * @param array $words
+     * 
+     * @return boolean
+     */
+    public function verifyMnemonicWords(array $words)
+    {
+        return (new MnemonicService)->verifyByWords($words, $this->security->mnemonic_entropy);
     }
 }
