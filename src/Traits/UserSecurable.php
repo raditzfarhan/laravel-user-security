@@ -12,7 +12,7 @@ trait UserSecurable
      */
     public function security()
     {
-        return $this->hasOne('RaditzFarhan\UserSecurity\Models\UserSecurity', 'model_id')->where('model_type', get_class($this))->withDefault();
+        return $this->hasOne('RaditzFarhan\UserSecurity\Models\UserSecurity', 'model_id')->where('model_type', get_class($this));
     }
 
     /**
