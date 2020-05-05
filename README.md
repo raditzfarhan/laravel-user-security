@@ -14,7 +14,7 @@ Add security pin, mnemonic key and 2fa authentication feature to users.
 Via Composer
 
 ``` bash
-$ composer require raditzfarhan/laravel-user-security:^1.0
+$ composer require raditzfarhan/laravel-user-security
 ```
 
 ## Configuration
